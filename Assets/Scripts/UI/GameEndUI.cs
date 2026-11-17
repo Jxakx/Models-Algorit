@@ -2,13 +2,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using ArenaSurvivor.Core.Events;
+using ArenaSurvivor.Localization;
 using ArenaSurvivor.Managers;
 
 namespace ArenaSurvivor.UI
 {
     /// <summary>
-    /// Panel de fin de partida (derrota o victoria, mismo panel con distinto texto).
-    /// Escucha GameOverEvent/GameWonEvent; con el panel activo, R reinicia la escena.
+    /// Panel de fin de partida por VICTORIA — la derrota tiene su propio tratamiento (el
+    /// pantallazo azul, ver BsodUI), así que este solo escucha GameWonEvent.
+    /// Con el panel activo, R reinicia la escena.
     /// </summary>
     public class GameEndUI : MonoBehaviour
     {
@@ -24,13 +26,11 @@ namespace ArenaSurvivor.UI
 
         private void OnEnable()
         {
-            EventManager.Subscribe<GameOverEvent>(OnGameOver);
             EventManager.Subscribe<GameWonEvent>(OnGameWon);
         }
 
         private void OnDisable()
         {
-            EventManager.Unsubscribe<GameOverEvent>(OnGameOver);
             EventManager.Unsubscribe<GameWonEvent>(OnGameWon);
         }
 
@@ -43,15 +43,9 @@ namespace ArenaSurvivor.UI
             }
         }
 
-        private void OnGameOver(GameOverEvent gameEvent)
-        {
-            messageText.text = "GAME OVER\n\nPresioná R para reintentar";
-            ShowPanel();
-        }
-
         private void OnGameWon(GameWonEvent gameEvent)
         {
-            messageText.text = "¡GANASTE!\n\nPresioná R para reintentar";
+            messageText.text = Localizer.Get(LocKeys.EndWin);
             ShowPanel();
         }
 

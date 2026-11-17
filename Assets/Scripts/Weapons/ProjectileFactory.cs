@@ -1,5 +1,6 @@
 using UnityEngine;
 using ArenaSurvivor.Core.Pooling;
+using ArenaSurvivor.Weapons.HitEffects;
 
 namespace ArenaSurvivor.Weapons
 {
@@ -13,10 +14,10 @@ namespace ArenaSurvivor.Weapons
             _pool = new ObjectPool<Projectile>(prefab, poolParent, prewarmCount);
         }
 
-        public Projectile Create(Vector2 position, Vector2 direction, float speed, float damage, float lifetime)
+        public Projectile Create(Vector2 position, Vector2 direction, WeaponData data, float damage, IHitEffect hitEffect)
         {
             var projectile = _pool.Get(position, Quaternion.identity);
-            projectile.Launch(position, direction, speed, damage, lifetime, Release);
+            projectile.Launch(position, direction, data, damage, hitEffect, Release);
             return projectile;
         }
 

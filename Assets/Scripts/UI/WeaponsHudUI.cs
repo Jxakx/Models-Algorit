@@ -3,6 +3,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 using ArenaSurvivor.Core.Events;
+using ArenaSurvivor.Localization;
 using ArenaSurvivor.Weapons;
 
 namespace ArenaSurvivor.UI
@@ -10,7 +11,9 @@ namespace ArenaSurvivor.UI
     /// <summary>
     /// Lista en el HUD las armas que el jugador ya tiene y a qué nivel están. No conoce a
     /// WeaponBase ni al Player — solo escucha WeaponChangedEvent (Observer) y arma su propia
-    /// tabla nombre → nivel, así que una arma nueva aparece sola apenas se desbloquea.
+    /// tabla clave de nombre → nivel, así que una arma nueva aparece sola apenas se
+    /// desbloquea. Guarda la CLAVE del nombre y la traduce al dibujar, así la lista se
+    /// vuelve a escribir sola cuando cambia el idioma.
     /// </summary>
     public class WeaponsHudUI : MonoBehaviour
     {
@@ -24,11 +27,13 @@ namespace ArenaSurvivor.UI
         private void OnEnable()
         {
             EventManager.Subscribe<WeaponChangedEvent>(OnWeaponChanged);
+            EventManager.Subscribe<LanguageChangedEvent>(OnLanguageChanged);
         }
 
         private void OnDisable()
         {
             EventManager.Unsubscribe<WeaponChangedEvent>(OnWeaponChanged);
+            EventManager.Unsubscribe<LanguageChangedEvent>(OnLanguageChanged);
         }
 
         private void OnWeaponChanged(WeaponChangedEvent gameEvent)
@@ -42,19 +47,21 @@ namespace ArenaSurvivor.UI
             Redraw();
         }
 
+        private void OnLanguageChanged(LanguageChangedEvent gameEvent) => Redraw();
+
         private void Redraw()
         {
             _builder.Clear();
 
             for (var i = 0; i < _order.Count; i++)
             {
-                var weaponName = _order[i];
+                var weaponKey = _order[i];
                 if (i > 0)
                 {
                     _builder.Append('\n');
                 }
 
-                _builder.Append(weaponName).Append(" Nv.").Append(_levelByWeapon[weaponName]);
+                _builder.Append(Localizer.Get(LocKeys.HudWeaponLevel, Localizer.Get(weaponKey), _levelByWeapon[weaponKey]));
             }
 
             weaponsText.text = _builder.ToString();

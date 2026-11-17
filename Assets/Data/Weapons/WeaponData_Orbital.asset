@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: WeaponData_Orbital
   m_EditorClassIdentifier: 
   weaponName: Orbe Espectral
+  nameKey: weapon.orbital
   maxLevel: 5
+  fireSound: 1
   baseDamage: 8
   damagePerLevel: 3
   baseCooldown: 1
@@ -21,3 +23,19 @@ MonoBehaviour:
   minCooldown: 1
   projectileSpeed: 1
   projectileLifetime: 1
+  levelTable:
+  - Damage: 8
+    Cooldown: 1
+    ProjectileCount: 1
+  - Damage: 11
+    Cooldown: 1
+    ProjectileCount: 1
+  - Damage: 14
+    Cooldown: 1
+    ProjectileCount: 2
+  - Damage: 17
+    Cooldown: 1
+    ProjectileCount: 2
+  - Damage: 20
+    Cooldown: 1
+    ProjectileCount: 3

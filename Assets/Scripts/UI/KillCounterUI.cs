@@ -1,29 +1,45 @@
 using UnityEngine;
 using UnityEngine.UI;
 using ArenaSurvivor.Core.Events;
+using ArenaSurvivor.Localization;
 using ArenaSurvivor.Managers;
 
 namespace ArenaSurvivor.UI
 {
-    /// <summary>Muestra la cantidad de enemigos eliminados. Solo escucha KillCountChangedEvent.</summary>
+    /// <summary>
+    /// Muestra la cantidad de enemigos eliminados. Escucha KillCountChangedEvent y
+    /// LanguageChangedEvent (para volver a escribir la etiqueta en el idioma nuevo).
+    /// </summary>
     public class KillCounterUI : MonoBehaviour
     {
         [SerializeField] private Text countText;
 
+        private int _count;
+
         private void OnEnable()
         {
             EventManager.Subscribe<KillCountChangedEvent>(OnKillCountChanged);
-            countText.text = "Kills: 0";
+            EventManager.Subscribe<LanguageChangedEvent>(OnLanguageChanged);
+            Redraw();
         }
 
         private void OnDisable()
         {
             EventManager.Unsubscribe<KillCountChangedEvent>(OnKillCountChanged);
+            EventManager.Unsubscribe<LanguageChangedEvent>(OnLanguageChanged);
         }
 
         private void OnKillCountChanged(KillCountChangedEvent gameEvent)
         {
-            countText.text = $"Kills: {gameEvent.Count}";
+            _count = gameEvent.Count;
+            Redraw();
+        }
+
+        private void OnLanguageChanged(LanguageChangedEvent gameEvent) => Redraw();
+
+        private void Redraw()
+        {
+            countText.text = Localizer.Get(LocKeys.HudKills, _count);
         }
     }
 }

@@ -6,6 +6,118 @@ tener que releer todo el proyecto de cero.
 
 ---
 
+# PARCIAL 2 — Los 5 patrones nuevos
+
+Se parte de la escena **MUNDO 1** (rama `parcial2`, código del Parcial 1). Los 5 patrones
+elegidos están sobre cosas que ya estaban en el juego, no agregados "porque sí": cada uno
+arregla algo que hoy era duplicado o rígido.
+
+Cómo probar todo en el Editor: **Tools > Arena Survivor > Parcial 2 > Preparar escena MUNDO 1**
+arma/cablea la escena (idempotente, se puede correr varias veces). En **Debug** hay atajos
+solo para Play: alternar pausa, subir de nivel, desbloquear todas las armas, matar al
+jugador (para ver el pantallazo azul) y resetear el idioma guardado.
+
+## P2.1 Strategy — a quién le apunta cada arma y cómo se mueve cada enemigo
+
+- **El problema:** "buscar el enemigo más cercano" estaba copiado en cinco lugares
+  (`ProjectileWeapon`, `LaserWeapon`, `DroneWeapon`, `DroneMovement`, `ChainLightningWeapon`)
+  y el chase de `Enemy.FixedUpdate` era un único comportamiento fijo.
+- **Targeting** (`Weapons/Targeting/`): `ITargetingStrategy` (la abstracción) →
+  `TargetingStrategy` (base ScriptableObject, trae el filtro común) → `NearestTargeting`,
+  `FarthestTargeting`, `StrongestTargeting`, `RandomTargeting`. Las armas heredan de
+  `TargetedWeapon` y piden `FindTarget(...)`; la estrategia concreta es un asset que se
+  arrastra en el Inspector (Laser = el más fuerte, Dron = el más lejano, resto = el más cercano).
+- **Movimiento** (`Enemies/Movement/`): `IMovementStrategy` → `MovementStrategy` (SO) →
+  `ChaseMovement` (Basic), `ZigZagMovement` (Swarm), `ChargeMovement` (Tank). Se asigna en el
+  `EnemyData`. `Enemy` solo llama `CalculateVelocity(MovementContext)`.
+- **Por qué es Strategy y no un `switch`:** agregar un criterio nuevo es crear una clase/asset
+  nuevo; no se toca ni `Enemy` ni ninguna arma (Open/Closed), y ambos dependen de la
+  interfaz, no de la implementación (Dependency Inversion).
+- **Detalle que suma:** las estrategias no guardan estado por enemigo — reciben todo en el
+  `MovementContext` — así UN asset mueve a los 150 enemigos de un tipo.
+
+## P2.2 Flyweight — datos compartidos de enemigos, proyectiles y números de daño
+
+- **Roles del patrón:**
+  - *Flyweight* (estado intrínseco, compartido y solo de lectura): `EnemyData`,
+    `WeaponData` (lo comparten todos los proyectiles del arma), `DamageNumberStyle`.
+  - *FlyweightFactory*: `Core/Flyweight/FlyweightFactory<T>` — entrega una única instancia
+    compartida por clave (`GetOrCreate`) y cuenta cuántos contextos usan cada flyweight
+    (`Acquire`/`Release`). `EnemyFactory` además guarda un pool por cada `EnemyData`.
+  - *Contexto* (estado extrínseco, propio de cada objeto): `Enemy` (objetivo, vida actual,
+    cooldown, empujón), `Projectile` (dirección, daño, cronómetro), `FloatingDamageNumber`
+    (monto, cronómetro).
+- **Lo que cambió:** antes `Enemy.Initialize` COPIABA vida/velocidad/daño/color a campos
+  propios en cada enemigo. Ahora guarda solo una referencia al `EnemyData` compartido.
+- **Cómo se demuestra en la defensa:** el panel verde de abajo a la izquierda
+  (`FlyweightStatsUI`, F3 lo oculta) muestra en vivo "Enemigos vivos: 87 -> datos
+  compartidos (EnemyData): 3". Es la prueba visible del ahorro.
+
+## P2.3 Look-Up Table — sonidos, daño/cooldown por nivel y XP por nivel
+
+- **Sonidos** (`Audio/SoundBank`): tabla `SoundId -> {clip, volumen}` (diccionario, acceso
+  O(1)). Ningún script carga un audio por nombre ni por ruta: piden un `SoundId`. Los clips
+  se arrastran en el Inspector del objeto **Audio** (15 filas, una por sonido). `SoundPlayer`
+  traduce eventos del juego a `SoundId`s; `MusicPlayer` pide `SoundId.Music`. Si una fila no
+  tiene clip, ese sonido simplemente no suena.
+- **Daño/cooldown/proyectiles por nivel** (`WeaponData.levelTable`) y **XP por nivel**
+  (`PlayerLeveling.xpPerLevel`): antes eran fórmulas que se recalculaban; ahora son tablas
+  indexadas por nivel, editables fila por fila en el Inspector. Los parámetros viejos quedan
+  como "generador" (menú contextual *Regenerar tabla*).
+
+## P2.4 Decorator — efectos de golpe apilables por arma
+
+- **El problema:** Láser y Cadena repetían "dañar + empujar + avisar impacto", y cada arma
+  nueva con un efecto extra (ralentizar...) obligaba a copiar más código o a heredar.
+- **Estructura** (`Weapons/HitEffects/`): `IHitEffect` (componente) → `DamageHitEffect`
+  (componente concreto: solo daño) → `HitEffectDecorator` (base) → `KnockbackDecorator`,
+  `SlowDecorator`, `ImpactSparksDecorator`.
+- **Cómo se arma:** `WeaponBase.BuildHitEffect()` empieza por el daño y envuelve solo los
+  efectos que el arma tiene configurados en el Inspector (empujón, ralentización, chispas).
+  Ejemplo: el Láser = chispas(ralentizar(empujar(daño))).
+- **Detalle:** el daño es siempre el más interno (el último en ejecutarse), así empujar y
+  ralentizar se aplican antes de que el golpe mate al enemigo y el pool lo recicle.
+- Los decoradores piden capacidades por interfaz (`IDamageable`, `IKnockbackable`,
+  `ISlowable` — ISP): un objetivo que no sea ralentizable simplemente se saltea ese efecto.
+
+## P2.5 Localization Manager — ES/EN en vivo
+
+- `LocalizationManager` (corre primero, `DefaultExecutionOrder(-200)`) indexa la
+  `LocalizationTable` (asset editable: clave -> español / inglés), recuerda el idioma en
+  `PlayerPrefs` y publica `LanguageChangedEvent` cuando cambia (Observer).
+- El código nunca escribe un texto a mano: pide una clave (`LocKeys`). Los textos fijos usan
+  `LocalizedText`; los dinámicos (HUD, panel de nivel, BSOD) guardan su último dato y se
+  redibujan al recibir el evento. `Localizer.Get(...)` es el acceso corto; si no hay manager
+  devuelve la clave (el juego no se rompe).
+- El botón **Idioma** del menú de pausa llama `Localizer.ToggleLanguage()`.
+- Interfaz `ILocalizationService`: el resto del juego depende de ella, no de la clase concreta.
+
+## Extras de esta entrega (no cuentan como patrón, pero conviene saber explicarlos)
+
+- **Menú de pausa** (ESC): `PauseController` maneja solo el ESTADO (publica `GamePausedEvent` /
+  `GameResumedEvent`); `PauseMenuUI` muestra el panel al recibirlos. ESC no pisa una pausa
+  de otro sistema (panel de nivel o fin de partida).
+- **Pantallazo azul** (`BsodUI`): reemplaza al panel de game over para la derrota; la
+  victoria sigue en `GameEndUI`.
+- **FX reciclados** de la escena anterior: partículas (muerte e impacto), números de daño,
+  parpadeo al recibir daño y "pop" al aparecer.
+- **Armas nuevas** (Láser, Cadena, Dron): se desbloquean desde el panel de nivel.
+
+## Respuestas cortas para la defensa (Parcial 2)
+
+- **¿Por qué estos 5?** Cada uno arregla algo real: duplicación de búsqueda de objetivos
+  (Strategy), copias de datos por enemigo (Flyweight), fórmulas y campos sueltos de audio
+  (Look-Up Table), efectos de golpe copiados (Decorator), textos fijos en español (Localization).
+- **¿Y MVC / Memento / Builder / Screen Manager?** No se forzaron: con las pantallas actuales
+  (nivel, pausa, fin) no justificaban el costo — mejor 5 bien aplicados que 9 a medias.
+- **¿Sigue valiendo lo del Parcial 1?** Sí: Pool + Factory y Observer (EventManager) son la
+  base sobre la que se apoyan los 5 nuevos (el Flyweight usa el pool, Localization y la
+  pausa publican eventos, el sonido escucha eventos).
+
+---
+
+# PARCIAL 1 — Patrones y SOLID (base del proyecto)
+
 ## 1. Los patrones que pide la consigna
 
 ### Object Pool + Factory (4 pts)

@@ -29,5 +29,24 @@ namespace ArenaSurvivor.Weapons
             var radians = _angleDegrees * Mathf.Deg2Rad;
             orbitVisual.localPosition = new Vector3(Mathf.Cos(radians), Mathf.Sin(radians), 0f) * orbitRadius;
         }
+
+        // El visual es un hijo aparte, así que sigue mostrándose (quieto, en su última
+        // posición) aunque el arma esté desactivada por no estar desbloqueada todavía —
+        // esto lo oculta/muestra en sincro con el estado real del arma.
+        private void OnEnable()
+        {
+            if (orbitVisual != null)
+            {
+                orbitVisual.gameObject.SetActive(true);
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (orbitVisual != null)
+            {
+                orbitVisual.gameObject.SetActive(false);
+            }
+        }
     }
 }

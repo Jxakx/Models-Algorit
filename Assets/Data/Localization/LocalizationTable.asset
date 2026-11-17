@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c3345dae64204d4c9d76d7d6600e6d9, type: 3}
+  m_Name: LocalizationTable
+  m_EditorClassIdentifier: 
+  entries:
+  - key: level.title
+    spanish: "\xA1Subiste de nivel!"
+    english: Level up!
+  - key: upgrade.new_weapon
+    spanish: 'Nueva arma: {0}'
+    english: 'New weapon: {0}'
+  - key: upgrade.weapon_level
+    spanish: '{0} Nv.{1}'
+    english: '{0} Lv.{1}'
+  - key: upgrade.speed
+    spanish: Velocidad +10%
+    english: Speed +10%
+  - key: upgrade.damage
+    spanish: "Da\xF1o +10%"
+    english: Damage +10%
+  - key: upgrade.health
+    spanish: "Vida m\xE1xima +20"
+    english: Max health +20
+  - key: weapon.magic_missile
+    spanish: "Bala M\xE1gica"
+    english: Magic Missile
+  - key: weapon.orbital
+    spanish: Orbe Espectral
+    english: Spectral Orb
+  - key: weapon.laser
+    spanish: Haz Perforante
+    english: Piercing Beam
+  - key: weapon.chain
+    spanish: "Cadena El\xE9ctrica"
+    english: Chain Lightning
+  - key: weapon.drone
+    spanish: "Dron Acompa\xF1ante"
+    english: Companion Drone
+  - key: hud.level
+    spanish: Nv. {0}
+    english: Lv. {0}
+  - key: hud.kills
+    spanish: 'Bajas: {0}'
+    english: 'Kills: {0}'
+  - key: hud.stats
+    spanish: "Velocidad: {0}%   Da\xF1o: {1}%"
+    english: 'Speed: {0}%   Damage: {1}%'
+  - key: hud.weapon_level
+    spanish: '{0} Nv.{1}'
+    english: '{0} Lv.{1}'
+  - key: end.win
+    spanish: "\xA1GANASTE!\n\nPresion\xE1 R para reintentar"
+    english: 'YOU WIN!
+
+
+      Press R to retry'
+  - key: bsod.message
+    spanish: "Tu PC tuvo un problema y tiene que reiniciarse.\n\nQu\xE9 pena que
+      hayas muerto... otra vez. \xBFReintentar?\n\nPresion\xE1 R para reintentar"
+    english: 'Your PC ran into a problem and needs to restart.
+
+
+      Sorry you
+      died... again. Want to retry?
+
+
+      Press R to retry'
+  - key: pause.title
+    spanish: PAUSA
+    english: PAUSED
+  - key: pause.resume
+    spanish: Reanudar
+    english: Resume
+  - key: pause.restart
+    spanish: Reiniciar
+    english: Restart
+  - key: pause.language
+    spanish: "Idioma: Espa\xF1ol"
+    english: 'Language: English'
+  - key: fly.title
+    spanish: FLYWEIGHT (F3 oculta)
+    english: FLYWEIGHT (F3 hides)
+  - key: fly.enemies
+    spanish: 'Enemigos vivos: {0}  ->  datos compartidos (EnemyData): {1}'
+    english: 'Live enemies: {0}  ->  shared data (EnemyData): {1}'
+  - key: fly.projectiles
+    spanish: 'Proyectiles activos: {0}  ->  datos compartidos (WeaponData): {1}'
+    english: 'Active projectiles: {0}  ->  shared data (WeaponData): {1}'
+  - key: fly.numbers
+    spanish: "N\xFAmeros de da\xF1o: {0}  ->  estilos compartidos: {1}"
+    english: 'Damage numbers: {0}  ->  shared styles: {1}'
