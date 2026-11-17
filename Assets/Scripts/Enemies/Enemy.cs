@@ -34,7 +34,6 @@ namespace ArenaSurvivor.Enemies
 
         // Flyweight: estado intrínseco COMPARTIDO (solo lectura).
         private EnemyData _data;
-        private EnemyData _lookApplied;
         private bool _flyweightAcquired;
 
         // Estado extrínseco: propio de esta instancia.
@@ -73,15 +72,11 @@ namespace ArenaSurvivor.Enemies
             _data = FlyweightFactory<EnemyData>.Acquire(data);
             _flyweightAcquired = _data != null;
 
-            // El aspecto (color y escala) es intrínseco del tipo: solo se vuelve a aplicar si
-            // esta instancia reciclada pasó a ser de OTRO tipo. Como el EnemyFactory guarda un
-            // pool por tipo, en la práctica se aplica una sola vez en toda su vida.
-            if (_lookApplied != _data)
-            {
-                _spriteRenderer.color = _data.Color;
-                transform.localScale = Vector3.one * _data.Scale;
-                _lookApplied = _data;
-            }
+            // El aspecto (color y escala) sale del flyweight y se aplica en CADA spawn: otros
+            // componentes (HitFlash, SquashStretch) también tocan el color y la escala del
+            // sprite, así que no se puede asumir que una instancia reciclada lo conserva bien.
+            _spriteRenderer.color = _data.Color;
+            transform.localScale = Vector3.one * _data.Scale;
 
             // El "pop" de aparición va en cada spawn, con la escala definitiva del tipo.
             _squashStretch?.Play(Vector3.one * _data.Scale);

@@ -49,6 +49,11 @@ namespace ArenaSurvivor.Fx
             {
                 StopCoroutine(_flashRoutine);
                 _flashRoutine = null;
+
+                // El golpe que MATA dispara el flash y a continuación el pool desactiva al
+                // enemigo: si se cortaba acá sin restaurar, el sprite volvía al pool teñido de
+                // blanco y reaparecía así. Se devuelve al color original antes de irse.
+                _spriteRenderer.color = _colorBeforeFlash;
             }
         }
 
