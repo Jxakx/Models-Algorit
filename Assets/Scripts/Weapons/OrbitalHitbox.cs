@@ -2,10 +2,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using ArenaSurvivor.Core.Combat;
 using ArenaSurvivor.Enemies;
+using ArenaSurvivor.Weapons.HitEffects;
 
 namespace ArenaSurvivor.Weapons
 {
-    /// <summary>Collider hijo del OrbitalWeapon: aplica daño con un cooldown por enemigo tocado.</summary>
+    /// <summary>
+    /// Collider hijo del OrbitalWeapon: aplica el efecto de golpe del arma con un cooldown
+    /// por enemigo tocado.
+    /// </summary>
     public class OrbitalHitbox : MonoBehaviour
     {
         private const float HitCooldown = 0.5f;
@@ -24,7 +28,7 @@ namespace ArenaSurvivor.Weapons
 
         private void TryHit(Collider2D other)
         {
-            if (other.CompareTag("Player"))
+            if (_owner == null || other.CompareTag("Player"))
             {
                 return;
             }
@@ -34,7 +38,7 @@ namespace ArenaSurvivor.Weapons
                 return;
             }
 
-            if (!other.TryGetComponent<IDamageable>(out var damageable))
+            if (!other.TryGetComponent<IDamageable>(out _))
             {
                 return;
             }
@@ -44,7 +48,10 @@ namespace ArenaSurvivor.Weapons
                 return;
             }
 
-            damageable.TakeDamage(_owner.CurrentDamage);
+            var point = (Vector2)enemy.transform.position;
+            var direction = (point - (Vector2)_owner.transform.position).normalized;
+
+            _owner.HitEffect.Apply(new HitContext(enemy, point, direction, _owner.CurrentDamage));
             _lastHitTimes[enemy] = Time.time;
         }
     }

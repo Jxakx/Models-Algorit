@@ -2,39 +2,61 @@ using System;
 using UnityEngine;
 using ArenaSurvivor.Core.Combat;
 using ArenaSurvivor.Core.Events;
+using ArenaSurvivor.Core.Flyweight;
 using ArenaSurvivor.Core.Pooling;
+using ArenaSurvivor.Enemies.Movement;
+using ArenaSurvivor.Fx;
 
 namespace ArenaSurvivor.Enemies
 {
     /// <summary>
-    /// Comportamiento de un enemigo: perseguir al target y hacer daño de contacto. Las
-    /// estadísticas (vida, velocidad, daño, color) las recibe de un EnemyData en Initialize —
-    /// el mismo prefab sirve para todos los "tipos" de enemigo, solo cambian los datos.
+    /// Comportamiento de un enemigo: moverse según la estrategia de su tipo y hacer daño de
+    /// contacto. Es el CONTEXTO del patrón Flyweight: no copia las estadísticas de su
+    /// EnemyData (vida máxima, velocidad, daño, color...), solo guarda una referencia al
+    /// dato compartido y su propio estado extrínseco (objetivo, cooldown, empujón,
+    /// ralentización). El mismo prefab sirve para todos los "tipos" de enemigo.
     /// Se recicla vía ObjectPool (IPoolable) en vez de instanciarse/destruirse cada vez.
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(SpriteRenderer))]
     [RequireComponent(typeof(Health))]
-    public class Enemy : MonoBehaviour, IPoolable
+    public class Enemy : MonoBehaviour, IPoolable, IKnockbackable, ISlowable
     {
         private const float ContactDamageCooldown = 1f;
+
+        [Tooltip("Qué tan rápido se apaga el empujón que recibe este enemigo al ser golpeado.")]
+        [SerializeField] private float knockbackDamping = 8f;
 
         private Rigidbody2D _rigidbody;
         private SpriteRenderer _spriteRenderer;
         private Health _health;
+        private SquashStretch _squashStretch;
 
+        // Flyweight: estado intrínseco COMPARTIDO (solo lectura).
+        private EnemyData _data;
+        private EnemyData _lookApplied;
+        private bool _flyweightAcquired;
+
+        // Estado extrínseco: propio de esta instancia.
         private Transform _target;
         private Action<Enemy> _releaseToPool;
-        private float _moveSpeed;
-        private float _contactDamage;
-        private int _experienceReward;
         private float _lastContactDamageTime;
+        private Vector2 _knockbackVelocity;
+        private float _slowMultiplier = 1f;
+        private float _slowUntil;
+        private float _movementSeed;
+
+        /// <summary>El flyweight de este enemigo (null mientras está en el pool sin usar).</summary>
+        public EnemyData Data => _data;
+
+        public float CurrentHealth => _health.CurrentHealth;
 
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody2D>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _health = GetComponent<Health>();
+            _squashStretch = GetComponent<SquashStretch>();
 
             // Se suscribe una sola vez: Awake corre una única vez en la vida del GameObject,
             // aunque el pool lo recicle muchas veces con SetActive.
@@ -46,19 +68,35 @@ namespace ArenaSurvivor.Enemies
         {
             _target = target;
             _releaseToPool = releaseToPool;
-            _moveSpeed = data.MoveSpeed;
-            _contactDamage = data.ContactDamage;
-            _experienceReward = data.ExperienceReward;
 
-            _spriteRenderer.color = data.Color;
-            transform.localScale = Vector3.one * data.Scale;
+            ReleaseFlyweight();
+            _data = FlyweightFactory<EnemyData>.Acquire(data);
+            _flyweightAcquired = _data != null;
 
-            _health.ConfigureMaxHealth(data.MaxHealth);
+            // El aspecto (color y escala) es intrínseco del tipo: solo se vuelve a aplicar si
+            // esta instancia reciclada pasó a ser de OTRO tipo. Como el EnemyFactory guarda un
+            // pool por tipo, en la práctica se aplica una sola vez en toda su vida.
+            if (_lookApplied != _data)
+            {
+                _spriteRenderer.color = _data.Color;
+                transform.localScale = Vector3.one * _data.Scale;
+                _lookApplied = _data;
+            }
+
+            // El "pop" de aparición va en cada spawn, con la escala definitiva del tipo.
+            _squashStretch?.Play(Vector3.one * _data.Scale);
+
+            // La vida actual es extrínseca: cada spawn arranca con la vida máxima del tipo.
+            _health.ConfigureMaxHealth(_data.MaxHealth);
         }
 
         public void OnSpawn()
         {
             _lastContactDamageTime = float.NegativeInfinity;
+            _knockbackVelocity = Vector2.zero;
+            _slowMultiplier = 1f;
+            _slowUntil = 0f;
+            _movementSeed = UnityEngine.Random.value;
         }
 
         public void OnDespawn()
@@ -75,17 +113,46 @@ namespace ArenaSurvivor.Enemies
         private void OnDisable()
         {
             EnemyRegistry.Unregister(this);
+            ReleaseFlyweight();
         }
 
-        private void FixedUpdate()
+        private void ReleaseFlyweight()
         {
-            if (_target == null)
+            if (!_flyweightAcquired)
             {
                 return;
             }
 
-            var direction = ((Vector2)_target.position - _rigidbody.position).normalized;
-            _rigidbody.linearVelocity = direction * _moveSpeed;
+            FlyweightFactory<EnemyData>.Release(_data);
+            _flyweightAcquired = false;
+        }
+
+        public void ApplyKnockback(Vector2 direction, float force)
+        {
+            _knockbackVelocity = direction.normalized * force;
+        }
+
+        public void ApplySlow(float speedMultiplier, float duration)
+        {
+            _slowMultiplier = Mathf.Clamp(speedMultiplier, 0.05f, 1f);
+            _slowUntil = Time.time + duration;
+        }
+
+        private void FixedUpdate()
+        {
+            if (_target == null || _data == null)
+            {
+                return;
+            }
+
+            // Strategy: el Enemy no sabe CÓMO se mueve, solo le pide la velocidad a la
+            // estrategia de su tipo, pasándole su estado extrínseco de este instante.
+            var speed = _data.MoveSpeed * (Time.time < _slowUntil ? _slowMultiplier : 1f);
+            var context = new MovementContext(_rigidbody.position, _target.position, speed, Time.time, _movementSeed);
+            var chaseVelocity = _data.Movement.CalculateVelocity(context);
+
+            _rigidbody.linearVelocity = chaseVelocity + _knockbackVelocity;
+            _knockbackVelocity = Vector2.Lerp(_knockbackVelocity, Vector2.zero, knockbackDamping * Time.fixedDeltaTime);
         }
 
         private void OnTriggerEnter2D(Collider2D other) => TryDealContactDamage(other);
@@ -94,7 +161,7 @@ namespace ArenaSurvivor.Enemies
 
         private void TryDealContactDamage(Collider2D other)
         {
-            if (!other.CompareTag("Player"))
+            if (_data == null || !other.CompareTag("Player"))
             {
                 return;
             }
@@ -109,13 +176,17 @@ namespace ArenaSurvivor.Enemies
                 return;
             }
 
-            damageable.TakeDamage(_contactDamage);
+            damageable.TakeDamage(_data.ContactDamage);
             _lastContactDamageTime = Time.time;
         }
 
         private void HandleDied()
         {
-            EventManager.Publish(new EnemyKilledEvent(transform.position, _experienceReward));
+            if (_data != null)
+            {
+                EventManager.Publish(new EnemyKilledEvent(transform.position, _data.ExperienceReward, _data.Color));
+            }
+
             _releaseToPool?.Invoke(this);
         }
     }

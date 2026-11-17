@@ -1,10 +1,14 @@
 using UnityEngine;
-using ArenaSurvivor.Enemies;
+using ArenaSurvivor.Core.Events;
+using ArenaSurvivor.Fx;
 
 namespace ArenaSurvivor.Weapons
 {
-    /// <summary>Arma base: dispara al enemigo más cercano. Más proyectiles al subir de nivel.</summary>
-    public class ProjectileWeapon : WeaponBase
+    /// <summary>
+    /// Arma base: dispara al enemigo que elija su estrategia de targeting (por defecto el
+    /// más cercano). Más proyectiles al subir de nivel.
+    /// </summary>
+    public class ProjectileWeapon : TargetedWeapon
     {
         [SerializeField] private Projectile projectilePrefab;
         [SerializeField] private float spreadAngleDegrees = 10f;
@@ -23,7 +27,7 @@ namespace ArenaSurvivor.Weapons
 
         protected override void Fire()
         {
-            var target = FindNearestEnemy();
+            var target = FindTarget(transform.position, attackRange);
             if (target == null)
             {
                 return;
@@ -33,31 +37,14 @@ namespace ArenaSurvivor.Weapons
             var damage = CurrentDamage;
             var count = Data.GetProjectileCount(CurrentLevel);
 
+            EventManager.Publish(new WeaponFiredEvent(Data.FireSound));
+
             for (var i = 0; i < count; i++)
             {
                 var offsetIndex = i - (count - 1) / 2f;
                 var rotatedDirection = Quaternion.Euler(0f, 0f, offsetIndex * spreadAngleDegrees) * baseDirection;
-                _factory.Create(transform.position, rotatedDirection, Data.ProjectileSpeed, damage, Data.ProjectileLifetime);
+                _factory.Create(transform.position, rotatedDirection, Data, damage, HitEffect);
             }
-        }
-
-        private Enemy FindNearestEnemy()
-        {
-            Enemy nearest = null;
-            var nearestDistanceSquared = float.MaxValue;
-            var rangeSquared = attackRange * attackRange;
-
-            foreach (var enemy in EnemyRegistry.ActiveEnemies)
-            {
-                var distanceSquared = ((Vector2)enemy.transform.position - (Vector2)transform.position).sqrMagnitude;
-                if (distanceSquared <= rangeSquared && distanceSquared < nearestDistanceSquared)
-                {
-                    nearestDistanceSquared = distanceSquared;
-                    nearest = enemy;
-                }
-            }
-
-            return nearest;
         }
     }
 }

@@ -18,3 +18,4 @@ MonoBehaviour:
   experienceReward: 12
   color: {r: 0.4, g: 0.05, b: 0.05, a: 1}
   scale: 1.6
+  movement: {fileID: 11400000, guid: e5afaeab04cd9a94f8a7388ecb410274, type: 2}

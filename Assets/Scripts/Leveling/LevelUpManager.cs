@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using ArenaSurvivor.Core.Combat;
 using ArenaSurvivor.Core.Events;
+using ArenaSurvivor.Localization;
 using ArenaSurvivor.Player;
 using ArenaSurvivor.UI;
 using ArenaSurvivor.Weapons;
@@ -11,7 +12,9 @@ namespace ArenaSurvivor.Leveling
     /// <summary>
     /// Al subir de nivel, pausa el juego y muestra 3 opciones al azar entre: desbloquear un
     /// arma nueva, mejorar una que ya tenga, o subir un stat. Al elegir una, la aplica,
-    /// cierra el panel y reanuda. Las mejoras en sí (Apply) viven en UpgradeChoice.
+    /// cierra el panel y reanuda. Las mejoras en sí (Apply) viven en UpgradeChoice y todos
+    /// los textos salen del sistema de localización (se arman en el idioma actual cada vez
+    /// que se abre el panel).
     /// </summary>
     public class LevelUpManager : MonoBehaviour
     {
@@ -68,6 +71,7 @@ namespace ArenaSurvivor.Leveling
 
             panelRoot.SetActive(true);
             Time.timeScale = 0f;
+            EventManager.Publish(new ChoicePanelOpenedEvent());
         }
 
         private void OnChoicePicked(int index)
@@ -80,6 +84,7 @@ namespace ArenaSurvivor.Leveling
             _currentChoices[index].Apply();
             panelRoot.SetActive(false);
             Time.timeScale = 1f;
+            EventManager.Publish(new UpgradeChosenEvent());
         }
 
         private List<UpgradeChoice> BuildChoicePool()
@@ -88,25 +93,27 @@ namespace ArenaSurvivor.Leveling
 
             foreach (var weapon in weapons)
             {
+                var weaponName = Localizer.Get(weapon.Data.NameKey);
+
                 if (!weapon.enabled)
                 {
                     var weaponToUnlock = weapon;
                     pool.Add(new UpgradeChoice(
-                        $"Nueva arma: {weaponToUnlock.Data.WeaponName}",
+                        Localizer.Get(LocKeys.UpgradeNewWeapon, weaponName),
                         () => weaponToUnlock.enabled = true));
                 }
                 else if (!weapon.IsMaxLevel)
                 {
                     var weaponToLevelUp = weapon;
                     pool.Add(new UpgradeChoice(
-                        $"{weaponToLevelUp.Data.WeaponName} Nv.{weaponToLevelUp.CurrentLevel + 1}",
+                        Localizer.Get(LocKeys.UpgradeWeaponLevel, weaponName, weaponToLevelUp.CurrentLevel + 1),
                         () => weaponToLevelUp.LevelUp()));
                 }
             }
 
-            pool.Add(new UpgradeChoice("Velocidad +10%", () => playerStats.AddMoveSpeedPercent(0.1f)));
-            pool.Add(new UpgradeChoice("Daño +10%", () => playerStats.AddDamagePercent(0.1f)));
-            pool.Add(new UpgradeChoice("Vida máxima +20", () => playerHealth.ConfigureMaxHealth(playerHealth.MaxHealth + 20f)));
+            pool.Add(new UpgradeChoice(Localizer.Get(LocKeys.UpgradeSpeed), () => playerStats.AddMoveSpeedPercent(0.1f)));
+            pool.Add(new UpgradeChoice(Localizer.Get(LocKeys.UpgradeDamage), () => playerStats.AddDamagePercent(0.1f)));
+            pool.Add(new UpgradeChoice(Localizer.Get(LocKeys.UpgradeHealth), () => playerHealth.ConfigureMaxHealth(playerHealth.MaxHealth + 20f)));
 
             return pool;
         }

@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: WeaponData_MagicMissile
   m_EditorClassIdentifier: 
   weaponName: "Bala M\xE1gica"
+  nameKey: weapon.magic_missile
   maxLevel: 5
+  fireSound: 1
   baseDamage: 10
   damagePerLevel: 4
   baseCooldown: 1
@@ -21,3 +23,19 @@ MonoBehaviour:
   minCooldown: 0.25
   projectileSpeed: 12
   projectileLifetime: 3
+  levelTable:
+  - Damage: 10
+    Cooldown: 1
+    ProjectileCount: 1
+  - Damage: 14
+    Cooldown: 0.92
+    ProjectileCount: 1
+  - Damage: 18
+    Cooldown: 0.84000003
+    ProjectileCount: 2
+  - Damage: 22
+    Cooldown: 0.76
+    ProjectileCount: 2
+  - Damage: 26
+    Cooldown: 0.68
+    ProjectileCount: 3
