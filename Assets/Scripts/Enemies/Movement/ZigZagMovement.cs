@@ -2,11 +2,7 @@ using UnityEngine;
 
 namespace ArenaSurvivor.Enemies.Movement
 {
-    /// <summary>
-    /// Avanza hacia el objetivo pero serpenteando de lado a lado: más difícil de apuntar y
-    /// de esquivar en masa. Cada enemigo arranca desfasado (Seed), así el enjambre no
-    /// zigzaguea todo al mismo tiempo.
-    /// </summary>
+    // Avanza hacia el objetivo pero serpenteando de lado a lado
     [CreateAssetMenu(fileName = "Movement_ZigZag", menuName = "Arena Survivor/Movement/ZigZag")]
     public class ZigZagMovement : MovementStrategy
     {

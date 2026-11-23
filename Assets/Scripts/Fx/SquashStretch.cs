@@ -3,18 +3,6 @@ using UnityEngine;
 
 namespace ArenaSurvivor.Fx
 {
-    /// <summary>
-    /// "Pop" de aparición: crece desde 0 hasta su escala real pasándose un poco (efecto
-    /// resorte). Se dispara solo al activarse (sirve tal cual para la gema de XP, cuya
-    /// escala nunca cambia) o se puede llamar a Play(escala) a mano cuando la escala final
-    /// se decide después de activarse (caso Enemy, que la fija en Initialize según su tipo).
-    ///
-    /// La escala "de reposo" se guarda en Awake (corre una sola vez en toda la vida del
-    /// objeto pooleado) y no se vuelve a leer de transform.localScale en cada OnEnable: si
-    /// un gema se recicla justo a mitad del pop (por ejemplo, la agarrás apenas aparece),
-    /// releerla dejaba grabada esa escala a medio crecer como si fuera la "normal", y el
-    /// pool la iba arrastrando cada vez más chica o más grande en usos sucesivos.
-    /// </summary>
     public class SquashStretch : MonoBehaviour
     {
         [SerializeField] private float duration = 0.18f;

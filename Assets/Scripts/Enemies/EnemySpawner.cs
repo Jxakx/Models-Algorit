@@ -7,10 +7,6 @@ using ArenaSurvivor.Player;
 
 namespace ArenaSurvivor.Enemies
 {
-    /// <summary>
-    /// Un tipo de enemigo disponible para el spawner, y a partir de qué momento
-    /// (en segundos desde que arrancó la partida) empieza a poder aparecer.
-    /// </summary>
     [Serializable]
     public class EnemyWaveEntry
     {
@@ -21,7 +17,7 @@ namespace ArenaSurvivor.Enemies
     /// <summary>
     /// Genera enemigos alrededor del jugador, fuera de cámara, con una tasa que aumenta
     /// con el tiempo (más rápido = más difícil) y mezclando tipos más fuertes a medida que
-    /// se desbloquean. Usa el EnemyFactory (Pool + Factory) para no instanciar/destruir nunca.
+    /// se desbloquean.
     /// </summary>
     public class EnemySpawner : MonoBehaviour
     {

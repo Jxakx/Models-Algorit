@@ -4,8 +4,8 @@ namespace ArenaSurvivor.Enemies
 {
     /// <summary>
     /// Lista de enemigos activos en este momento. Cada Enemy se registra/desregistra solo
-    /// (OnEnable/OnDisable), lo que funciona perfecto con el pooling: un enemigo reciclado
-    /// se desactiva (sale de la lista) y al reusarse se reactiva (vuelve a entrar).
+    /// lo que funciona perfecto con el pooling: un enemigo reciclado
+    /// se desactiva (sale de la lista) y al reusarse se reactiva.
     /// Las armas la consultan para encontrar el enemigo más cercano sin acoplarse al Spawner.
     /// </summary>
     public static class EnemyRegistry

@@ -3,7 +3,7 @@ using ArenaSurvivor.Core.Pooling;
 
 namespace ArenaSurvivor.Fx
 {
-    /// <summary>Crea/recicla números de daño flotantes vía ObjectPool — mismo patrón que EnemyFactory.</summary>
+    //Crea/recicla números de daño flotantes vía ObjectPool
     public class DamageNumberFactory
     {
         private readonly ObjectPool<FloatingDamageNumber> _pool;

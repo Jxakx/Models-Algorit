@@ -3,7 +3,6 @@ using ArenaSurvivor.Core.Events;
 
 namespace ArenaSurvivor.Fx
 {
-    /// <summary>Chispa de impacto donde conecta cualquier arma (bala u orbe).</summary>
     public class WeaponImpactParticles : MonoBehaviour
     {
         [SerializeField] private PooledParticleEffect prefab;

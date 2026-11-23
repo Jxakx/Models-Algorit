@@ -2,7 +2,6 @@ using System;
 
 namespace ArenaSurvivor.Leveling
 {
-    /// <summary>Una opción de mejora concreta: un título para mostrar y qué hacer al elegirla.</summary>
     public class UpgradeChoice
     {
         public string Title { get; }

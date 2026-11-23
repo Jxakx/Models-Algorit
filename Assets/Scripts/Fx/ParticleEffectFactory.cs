@@ -3,7 +3,7 @@ using ArenaSurvivor.Core.Pooling;
 
 namespace ArenaSurvivor.Fx
 {
-    /// <summary>Crea/recicla ráfagas de partículas vía ObjectPool — mismo patrón que EnemyFactory.</summary>
+    //Crea/recicla ráfagas de partículas vía ObjectPool
     public class ParticleEffectFactory
     {
         private readonly ObjectPool<PooledParticleEffect> _pool;

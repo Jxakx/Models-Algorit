@@ -3,12 +3,6 @@ using UnityEngine;
 
 namespace ArenaSurvivor.Core.Combat
 {
-    /// <summary>
-    /// Componente de vida genérico y reusable: lo va a tener tanto el Player como cada Enemy.
-    /// No sabe nada de UI ni del EventManager global — solo expone eventos locales en C#.
-    /// Quien esté en el mismo GameObject (o tenga una referencia directa) decide qué hacer
-    /// con esos eventos; por ejemplo, PlayerHealth los traduce a eventos globales.
-    /// </summary>
     public class Health : MonoBehaviour, IDamageable
     {
         [SerializeField] private float maxHealth = 100f;
@@ -22,10 +16,10 @@ namespace ArenaSurvivor.Core.Combat
         public float CurrentHealth { get; private set; }
         public bool IsAlive => CurrentHealth > 0f;
 
-        /// <summary>Se dispara con (vidaActual, vidaMaxima) cada vez que la vida cambia.</summary>
+        //Se dispara con (vidaActual, vidaMaxima) cada vez que la vida cambia
         public event Action<float, float> HealthChanged;
 
-        /// <summary>Se dispara una sola vez, cuando la vida llega a 0.</summary>
+        //Se dispara una sola vez, cuando la vida llega a 0
         public event Action Died;
 
         private float _invulnerableUntil;
@@ -72,11 +66,7 @@ namespace ArenaSurvivor.Core.Combat
             HealthChanged?.Invoke(CurrentHealth, maxHealth);
         }
 
-        /// <summary>
-        /// Redefine la vida máxima y revive con la vida al tope. Pensado para el Enemy: cada
-        /// vez que el pool lo recicla con un EnemyData distinto, se reconfigura en vez de
-        /// crear un Health nuevo.
-        /// </summary>
+        //Redefine la vida máxima y revive con la vida al tope. Pensado para el Enemy: cada vez que el pool lo recicla con un enemyData distinto, se reconfigura en vez de crear un health nuevo.
         public void ConfigureMaxHealth(float newMaxHealth)
         {
             maxHealth = Mathf.Max(newMaxHealth, 1f);

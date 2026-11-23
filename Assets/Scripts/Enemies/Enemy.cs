@@ -9,14 +9,6 @@ using ArenaSurvivor.Fx;
 
 namespace ArenaSurvivor.Enemies
 {
-    /// <summary>
-    /// Comportamiento de un enemigo: moverse según la estrategia de su tipo y hacer daño de
-    /// contacto. Es el CONTEXTO del patrón Flyweight: no copia las estadísticas de su
-    /// EnemyData (vida máxima, velocidad, daño, color...), solo guarda una referencia al
-    /// dato compartido y su propio estado extrínseco (objetivo, cooldown, empujón,
-    /// ralentización). El mismo prefab sirve para todos los "tipos" de enemigo.
-    /// Se recicla vía ObjectPool (IPoolable) en vez de instanciarse/destruirse cada vez.
-    /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(SpriteRenderer))]
     [RequireComponent(typeof(Health))]
@@ -45,7 +37,7 @@ namespace ArenaSurvivor.Enemies
         private float _slowUntil;
         private float _movementSeed;
 
-        /// <summary>El flyweight de este enemigo (null mientras está en el pool sin usar).</summary>
+        //El flyweight de este enemigo (null mientras está en el pool sin usar)
         public EnemyData Data => _data;
 
         public float CurrentHealth => _health.CurrentHealth;
@@ -62,7 +54,7 @@ namespace ArenaSurvivor.Enemies
             _health.Died += HandleDied;
         }
 
-        /// <summary>Llamado por el EnemyFactory apenas lo saca del pool.</summary>
+        //Llamado por el EnemyFactory apenas lo saca del pool
         public void Initialize(EnemyData data, Transform target, Action<Enemy> releaseToPool)
         {
             _target = target;
@@ -74,14 +66,14 @@ namespace ArenaSurvivor.Enemies
 
             // El aspecto (color y escala) sale del flyweight y se aplica en CADA spawn: otros
             // componentes (HitFlash, SquashStretch) también tocan el color y la escala del
-            // sprite, así que no se puede asumir que una instancia reciclada lo conserva bien.
+            // sprite, así que no se puede asumir que una instancia reciclada lo conserva bien
             _spriteRenderer.color = _data.Color;
             transform.localScale = Vector3.one * _data.Scale;
 
-            // El "pop" de aparición va en cada spawn, con la escala definitiva del tipo.
+            // El "pop" de aparición va en cada spawn, con la escala definitiva del tipo
             _squashStretch?.Play(Vector3.one * _data.Scale);
 
-            // La vida actual es extrínseca: cada spawn arranca con la vida máxima del tipo.
+            // La vida actual es extrínseca: cada spawn arranca con la vida máxima del tipo
             _health.ConfigureMaxHealth(_data.MaxHealth);
         }
 
@@ -140,8 +132,7 @@ namespace ArenaSurvivor.Enemies
                 return;
             }
 
-            // Strategy: el Enemy no sabe CÓMO se mueve, solo le pide la velocidad a la
-            // estrategia de su tipo, pasándole su estado extrínseco de este instante.
+            // Strategy: el Enemy no sabe CÓMO se mueve, solo le pide la velocidad a la estrategia de su tipo
             var speed = _data.MoveSpeed * (Time.time < _slowUntil ? _slowMultiplier : 1f);
             var context = new MovementContext(_rigidbody.position, _target.position, speed, Time.time, _movementSeed);
             var chaseVelocity = _data.Movement.CalculateVelocity(context);

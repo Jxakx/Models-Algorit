@@ -4,11 +4,7 @@ using ArenaSurvivor.Core.Combat;
 
 namespace ArenaSurvivor.Fx
 {
-    /// <summary>
-    /// Flashea el sprite en blanco un instante al recibir daño. Escucha el evento LOCAL de su
-    /// propio Health (no el EventManager global) — no necesita saber si es el Player o un
-    /// enemigo, así que el mismo componente sirve para los dos (SRP + reuso).
-    /// </summary>
+    /// Flashea el sprite en blanco un instante al recibir daño
     [RequireComponent(typeof(Health))]
     [RequireComponent(typeof(SpriteRenderer))]
     public class HitFlash : MonoBehaviour
@@ -35,9 +31,7 @@ namespace ArenaSurvivor.Fx
 
         private void Start()
         {
-            // Start corre después de TODOS los Awake de la escena (incluido Health.Awake) —
-            // acá CurrentHealth ya está inicializada de verdad. Ver PlayerHealth.cs para el
-            // mismo razonamiento aplicado a la barra de vida.
+            // Start corre después de TODOS los Awake de la escena
             _lastKnownHealth = _health.CurrentHealth;
         }
 
@@ -50,9 +44,7 @@ namespace ArenaSurvivor.Fx
                 StopCoroutine(_flashRoutine);
                 _flashRoutine = null;
 
-                // El golpe que MATA dispara el flash y a continuación el pool desactiva al
-                // enemigo: si se cortaba acá sin restaurar, el sprite volvía al pool teñido de
-                // blanco y reaparecía así. Se devuelve al color original antes de irse.
+                // El golpe que MATA dispara el flash y a continuación el pool desactiva al enemigo
                 _spriteRenderer.color = _colorBeforeFlash;
             }
         }
@@ -75,9 +67,7 @@ namespace ArenaSurvivor.Fx
 
         private IEnumerator FlashRoutine()
         {
-            // Se guarda el color justo antes de flashear (no en Awake/OnEnable): un enemigo
-            // reciclado del pool recién recibe su color definitivo en Enemy.Initialize(),
-            // que puede correr después de este OnEnable.
+            // Se guarda el color justo antes de flashear
             _colorBeforeFlash = _spriteRenderer.color;
             _spriteRenderer.color = flashColor;
 

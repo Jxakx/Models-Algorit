@@ -3,7 +3,7 @@ using ArenaSurvivor.Core.Events;
 
 namespace ArenaSurvivor.Fx
 {
-    /// <summary>Escucha FloatingDamageTextEvent y pide al factory que muestre el número.</summary>
+    //Escucha FloatingDamageTextEvent y pide al factory que muestre el número
     public class DamageNumberController : MonoBehaviour
     {
         [SerializeField] private FloatingDamageNumber prefab;

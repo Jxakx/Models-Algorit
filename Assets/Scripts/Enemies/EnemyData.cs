@@ -5,15 +5,14 @@ using ArenaSurvivor.Enemies.Movement;
 namespace ArenaSurvivor.Enemies
 {
     /// <summary>
-    /// Configuración de un "tipo" de enemigo (swarm, tank, etc.). Agregar un tipo nuevo es
-    /// crear un asset de este ScriptableObject, no escribir una clase nueva — así el
-    /// EnemyFactory no necesita cambiar cuando el juego crece (Open/Closed).
+    /// Configuración de un "tipo" de enemigo. Agregar un tipo nuevo es
+    /// crear un asset de este ScriptableObject, no escribir una clase nueva así el
+    /// EnemyFactory no necesita cambiar cuando el juego crece.
     ///
     /// Es el FLYWEIGHT de los enemigos: guarda el estado intrínseco (el que es igual para
     /// todos los enemigos del mismo tipo) una sola vez, de solo lectura. Los 150 enemigos
     /// vivos de un nivel no copian estos números: cada Enemy guarda únicamente una
-    /// referencia a su EnemyData y su propio estado extrínseco (vida actual, objetivo,
-    /// cooldown). Ver Core/Flyweight/FlyweightFactory.cs.
+    /// referencia a su EnemyData y su propio estado.
     /// </summary>
     [CreateAssetMenu(fileName = "EnemyData", menuName = "Arena Survivor/Enemy Data")]
     public class EnemyData : ScriptableObject
@@ -39,7 +38,7 @@ namespace ArenaSurvivor.Enemies
         /// <summary>
         /// La estrategia de movimiento de este tipo. Si no se asignó ninguna, usa una
         /// "perseguir" por defecto que se crea una sola vez y se comparte entre todos los
-        /// tipos sin estrategia (la entrega la FlyweightFactory).
+        /// tipos sin estrategia.
         /// </summary>
         public IMovementStrategy Movement => movement != null ? movement : DefaultMovement();
 

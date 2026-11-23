@@ -3,13 +3,7 @@ using System.Collections.Generic;
 
 namespace ArenaSurvivor.Core.Events
 {
-    /// <summary>
-    /// Bus de eventos genérico (patrón Observer): los "sujetos" publican eventos sin conocer
-    /// quién los escucha, y los "observadores" se suscriben al tipo de evento que les interesa.
-    ///
-    /// Agregar un evento nuevo NO requiere modificar esta clase: solo hay que crear un tipo
-    /// que implemente IGameEvent y usarlo con Subscribe/Publish (Open/Closed Principle).
-    /// </summary>
+    //Agregar un evento nuevo NO requiere modificar esta clase: solo hay que crear un tipo que implemente IGameEvent y usarlo con Subscribe/Publish
     public static class EventManager
     {
         private static readonly Dictionary<Type, Delegate> Listeners = new Dictionary<Type, Delegate>();
@@ -58,10 +52,8 @@ namespace ArenaSurvivor.Core.Events
             }
         }
 
-        /// <summary>
-        /// Saca a todos los oyentes registrados. Útil al reiniciar la partida (Game Over / Retry)
-        /// para no arrastrar suscripciones de objetos que ya no existen.
-        /// </summary>
+ 
+        // Saca a todos los oyentes registrados. Al reiniciar la partida no arrastra suscripciones de objetos que ya no existen.
         public static void Clear()
         {
             Listeners.Clear();

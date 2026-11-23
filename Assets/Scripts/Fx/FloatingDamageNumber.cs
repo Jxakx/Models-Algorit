@@ -5,12 +5,7 @@ using ArenaSurvivor.Core.Pooling;
 
 namespace ArenaSurvivor.Fx
 {
-    /// <summary>
-    /// Un número de daño flotante pooleado: sube, se desvanece y se libera solo — mismo
-    /// esquema que Projectile/XpGem (Object Pool). Es un contexto del Flyweight: color,
-    /// velocidad y duración los toma del DamageNumberStyle compartido; lo único propio de
-    /// cada número es el monto que muestra y su cronómetro.
-    /// </summary>
+    // Un número de daño flotante pooleado: sube, se desvanece y se libera solo 
     [RequireComponent(typeof(TextMesh))]
     public class FloatingDamageNumber : MonoBehaviour, IPoolable
     {

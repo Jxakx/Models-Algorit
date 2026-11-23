@@ -2,11 +2,7 @@ using UnityEngine;
 
 namespace ArenaSurvivor.Enemies.Movement
 {
-    /// <summary>
-    /// Avanza despacio y cada tanto pega una embestida corta mucho más rápida: obliga al
-    /// jugador a prestarle atención a los lentos y pesados. El momento de la embestida
-    /// depende de Time + Seed, así que cada enemigo embiste en un instante distinto.
-    /// </summary>
+    // Avanza despacio y cada tanto pega una embestida corta mucho más rápida
     [CreateAssetMenu(fileName = "Movement_Charge", menuName = "Arena Survivor/Movement/Charge")]
     public class ChargeMovement : MovementStrategy
     {

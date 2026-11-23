@@ -5,7 +5,6 @@ using ArenaSurvivor.Core.Audio;
 
 namespace ArenaSurvivor.Audio
 {
-    /// <summary>Una fila de la Look-Up Table de sonidos: un nombre (SoundId) y el clip que suena con él.</summary>
     [Serializable]
     public class SoundEntry
     {
@@ -16,17 +15,6 @@ namespace ArenaSurvivor.Audio
 
         [Range(0f, 1f)] public float volume = 1f;
     }
-
-    /// <summary>
-    /// Look-Up Table de sonidos: asocia cada nombre (SoundId) con su clip y su volumen.
-    /// Quien quiere que suene algo pide un SoundId y la tabla responde en O(1) con el clip —
-    /// ningún script del juego carga un audio por nombre ni por ruta. Los clips se arrastran
-    /// a mano en el Inspector, y el volumen general y el de cada sonido se calibran acá
-    /// mismo, en un único lugar.
-    ///
-    /// La lista siempre muestra una fila por cada SoundId (si se agrega uno nuevo al enum,
-    /// aparece solo la próxima vez que se toque el Inspector).
-    /// </summary>
     public class SoundBank : MonoBehaviour
     {
         [Range(0f, 1f)] [SerializeField] private float masterVolume = 1f;
@@ -47,14 +35,14 @@ namespace ArenaSurvivor.Audio
             _lookup = null;
         }
 
-        /// <summary>Busca el sonido por nombre. Devuelve false si no tiene clip asignado.</summary>
+        //Busca el sonido por nombre. Devuelve false si no tiene clip asignado
         public bool TryGet(SoundId id, out SoundEntry entry)
         {
             _lookup ??= BuildLookup();
             return _lookup.TryGetValue(id, out entry) && entry.clip != null;
         }
 
-        /// <summary>Deja una fila por cada SoundId, en el orden del enum, sin perder lo ya asignado.</summary>
+        //Deja una fila por cada SoundId, en el orden del enum, sin perder lo ya asignado
         [ContextMenu("Completar entradas que falten")]
         public void EnsureAllEntries()
         {

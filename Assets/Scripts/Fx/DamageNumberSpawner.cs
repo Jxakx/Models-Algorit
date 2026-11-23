@@ -5,12 +5,6 @@ using ArenaSurvivor.Core.Flyweight;
 
 namespace ArenaSurvivor.Fx
 {
-    /// <summary>
-    /// Publica un FloatingDamageTextEvent cada vez que SU PROPIO Health pierde vida. Un
-    /// componente igual va en el Player (estilo rojo) y en el prefab de Enemy (estilo
-    /// blanco) — cada uno decide su estilo, ninguno sabe nada de pooling ni de cómo se
-    /// dibuja el número.
-    /// </summary>
     [RequireComponent(typeof(Health))]
     public class DamageNumberSpawner : MonoBehaviour
     {

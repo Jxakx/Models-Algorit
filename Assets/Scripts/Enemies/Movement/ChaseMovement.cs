@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ArenaSurvivor.Enemies.Movement
 {
-    /// <summary>Perseguir en línea recta al objetivo a velocidad constante (el comportamiento original).</summary>
+    //Perseguir en línea recta al objetivo a velocidad constante
     [CreateAssetMenu(fileName = "Movement_Chase", menuName = "Arena Survivor/Movement/Chase")]
     public class ChaseMovement : MovementStrategy
     {

@@ -10,15 +10,6 @@ using ArenaSurvivor.UI;
 
 namespace ArenaSurvivor.Audio
 {
-    /// <summary>
-    /// Traduce eventos de juego en efectos de sonido puntuales. Cada evento se mapea a un
-    /// SoundId y el audio real sale de la SoundBank (Look-Up Table): este script nunca
-    /// referencia un AudioClip. Un solo AudioSource con PlayOneShot alcanza: varios efectos
-    /// cortos superpuestos no se cortan entre sí.
-    ///
-    /// Es oyente del EventManager (Observer): los sistemas que generan los eventos no
-    /// saben que hay sonido.
-    /// </summary>
     [RequireComponent(typeof(AudioSource))]
     public class SoundPlayer : MonoBehaviour
     {
@@ -100,8 +91,7 @@ namespace ArenaSurvivor.Audio
 
         private void OnPlayerHealthChanged(PlayerHealthChangedEvent gameEvent)
         {
-            // El primer evento (estado inicial al arrancar) no debe sonar; el centinela
-            // negativo hace que ese primer chequeo se salte solo.
+            // El primer evento no debe sonar; el centinela negativo hace que ese primer chequeo se salte solo
             if (_lastKnownPlayerHealth >= 0f && gameEvent.CurrentHealth < _lastKnownPlayerHealth)
             {
                 Play(SoundId.PlayerHurt);
@@ -126,7 +116,7 @@ namespace ArenaSurvivor.Audio
 
         private void OnButtonClicked(UiButtonClickedEvent gameEvent) => Play(SoundId.ButtonClick);
 
-        /// <summary>Reproduce el sonido de ese nombre si la tabla tiene un clip asignado; si no, no hace nada.</summary>
+        //Reproduce el sonido de ese nombre si la tabla tiene un clip asignado; sino no hace nada
         public void Play(SoundId id)
         {
             if (bank == null || !bank.TryGet(id, out var entry))

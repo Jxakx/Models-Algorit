@@ -7,7 +7,6 @@ namespace ArenaSurvivor.Enemies
     /// <summary>
     /// Único punto del proyecto que "crea" enemigos: decide, a partir de un EnemyData, si
     /// reusa una instancia inactiva del pool o instancia una nueva, y la inicializa.
-    /// Nadie más debería llamar Instantiate sobre el prefab de Enemy directamente.
     ///
     /// Guarda un pool POR CADA EnemyData (por cada flyweight): así una instancia reciclada
     /// siempre vuelve a ser del mismo tipo que ya era, y no hay que reconfigurarle el

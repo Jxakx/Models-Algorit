@@ -4,7 +4,6 @@ using ArenaSurvivor.Enemies;
 
 namespace ArenaSurvivor.Fx
 {
-    /// <summary>Ráfaga de partículas al morir un enemigo, tintada con su propio color.</summary>
     public class EnemyDeathParticles : MonoBehaviour
     {
         [SerializeField] private PooledParticleEffect prefab;

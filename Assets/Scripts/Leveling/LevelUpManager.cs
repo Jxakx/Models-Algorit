@@ -9,13 +9,6 @@ using ArenaSurvivor.Weapons;
 
 namespace ArenaSurvivor.Leveling
 {
-    /// <summary>
-    /// Al subir de nivel, pausa el juego y muestra 3 opciones al azar entre: desbloquear un
-    /// arma nueva, mejorar una que ya tenga, o subir un stat. Al elegir una, la aplica,
-    /// cierra el panel y reanuda. Las mejoras en sí (Apply) viven en UpgradeChoice y todos
-    /// los textos salen del sistema de localización (se arman en el idioma actual cada vez
-    /// que se abre el panel).
-    /// </summary>
     public class LevelUpManager : MonoBehaviour
     {
         [SerializeField] private GameObject panelRoot;

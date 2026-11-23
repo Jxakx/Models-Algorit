@@ -4,10 +4,7 @@ using ArenaSurvivor.Core.Pooling;
 
 namespace ArenaSurvivor.Fx
 {
-    /// <summary>
-    /// Envoltorio pooleable de un ParticleSystem: lo reproduce una vez y se libera solo al
-    /// pool cuando termina — mismo esquema que Projectile/XpGem (Object Pool).
-    /// </summary>
+    // Pooleable de un ParticleSystem: lo reproduce una vez y se libera solo al pool cuando termina
     [RequireComponent(typeof(ParticleSystem))]
     public class PooledParticleEffect : MonoBehaviour, IPoolable
     {
@@ -21,7 +18,6 @@ namespace ArenaSurvivor.Fx
             _particles = GetComponent<ParticleSystem>();
         }
 
-        /// <summary>Tinta y dispara el efecto. Se llama justo después de sacarlo del pool.</summary>
         public void Emit(Color color, Action<PooledParticleEffect> releaseToPool)
         {
             _releaseToPool = releaseToPool;
