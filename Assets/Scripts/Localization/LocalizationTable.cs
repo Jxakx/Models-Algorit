@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ArenaSurvivor.Localization
 {
-    /// <summary>Una fila de la tabla de textos: la clave y su traducción a cada idioma.</summary>
+    //Una fila de la tabla de textos: la clave y su traducción a cada idioma
     [Serializable]
     public class LocalizationEntry
     {
@@ -24,11 +24,6 @@ namespace ArenaSurvivor.Localization
         }
     }
 
-    /// <summary>
-    /// Todos los textos del juego, en un asset editable: clave -> texto en cada idioma.
-    /// Agregar o corregir una traducción es editar este asset en el Inspector, sin
-    /// recompilar nada.
-    /// </summary>
     [CreateAssetMenu(fileName = "LocalizationTable", menuName = "Arena Survivor/Localization Table")]
     public class LocalizationTable : ScriptableObject
     {
@@ -36,7 +31,6 @@ namespace ArenaSurvivor.Localization
 
         public IReadOnlyList<LocalizationEntry> Entries => entries;
 
-        /// <summary>Agrega las claves por defecto que todavía no estén (no pisa lo que ya se haya editado).</summary>
         [ContextMenu("Completar con textos por defecto")]
         public void MergeDefaults()
         {

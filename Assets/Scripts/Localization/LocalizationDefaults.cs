@@ -1,10 +1,6 @@
 namespace ArenaSurvivor.Localization
 {
-    /// <summary>
-    /// Los textos del juego en cada idioma. LocalizationTable los agrega al asset (menú
-    /// contextual "Completar con textos por defecto"), y desde ahí se pueden retocar en el
-    /// Inspector sin tocar código — esta lista solo siembra las claves que falten.
-    /// </summary>
+    // Los textos del juego en cada idioma
     public static class LocalizationDefaults
     {
         public static readonly (string key, string spanish, string english)[] All =

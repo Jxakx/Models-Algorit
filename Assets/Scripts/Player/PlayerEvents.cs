@@ -2,7 +2,7 @@ using ArenaSurvivor.Core.Events;
 
 namespace ArenaSurvivor.Player
 {
-    /// <summary>Se publica cada vez que cambia la vida del jugador (daño o cura).</summary>
+    //Se publica cada vez que cambia la vida del jugador
     public readonly struct PlayerHealthChangedEvent : IGameEvent
     {
         public readonly float CurrentHealth;
@@ -15,12 +15,12 @@ namespace ArenaSurvivor.Player
         }
     }
 
-    /// <summary>Se publica una sola vez, cuando la vida del jugador llega a 0.</summary>
+    //Se publica cuando la vida del jugador llega a 0
     public readonly struct PlayerDiedEvent : IGameEvent
     {
     }
 
-    /// <summary>Se publica cuando una gema de XP es recolectada.</summary>
+    //Se publica cuando una gema de XP es recolectada
     public readonly struct XpCollectedEvent : IGameEvent
     {
         public readonly int Amount;
@@ -31,7 +31,7 @@ namespace ArenaSurvivor.Player
         }
     }
 
-    /// <summary>Se publica cada vez que cambia el progreso de XP del jugador (para la barra de XP).</summary>
+    //Se publica cada vez que cambia el progreso de XP del jugador
     public readonly struct PlayerXpChangedEvent : IGameEvent
     {
         public readonly int CurrentXp;
@@ -46,7 +46,7 @@ namespace ArenaSurvivor.Player
         }
     }
 
-    /// <summary>Se publica cuando el jugador sube de nivel (dispara el panel de mejoras).</summary>
+    //Se publica cuando el jugador sube de nivel
     public readonly struct PlayerLeveledUpEvent : IGameEvent
     {
         public readonly int NewLevel;
@@ -57,7 +57,7 @@ namespace ArenaSurvivor.Player
         }
     }
 
-    /// <summary>Se publica cada vez que cambia algún multiplicador de PlayerStats (para el HUD).</summary>
+    //Se publica cada vez que cambia algún multiplicador de PlayerStats
     public readonly struct PlayerStatsChangedEvent : IGameEvent
     {
         public readonly float MoveSpeedMultiplier;

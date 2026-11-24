@@ -4,17 +4,6 @@ using ArenaSurvivor.Core.Events;
 
 namespace ArenaSurvivor.Managers
 {
-    /// <summary>
-    /// Pausa/despausa el gameplay con ESC — pisando Time.timeScale, el mismo mecanismo que
-    /// ya usan el panel de nivel y el fin de partida. Solo maneja el ESTADO de pausa: avisa
-    /// por el EventManager (GamePausedEvent / GameResumedEvent) y quien quiera mostrar un
-    /// menú (PauseMenuUI) o sonar (SoundPlayer) reacciona a eso, sin que este script los
-    /// conozca.
-    ///
-    /// ESC nunca pisa una pausa que abrió otro sistema (panel de nivel, victoria, derrota):
-    /// si Time.timeScale ya estaba en 0 por otra razón cuando se intenta pausar, no hace
-    /// nada — evita despausar por accidente algo que este script no abrió.
-    /// </summary>
     public class PauseController : MonoBehaviour
     {
         private bool _isPaused;

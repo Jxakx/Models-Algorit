@@ -3,10 +3,7 @@ using UnityEngine.InputSystem;
 
 namespace ArenaSurvivor.Player
 {
-    /// <summary>
-    /// Responsable únicamente del movimiento del jugador: lee el input y mueve el Rigidbody2D.
-    /// No sabe nada de vida, armas ni nivel — esos viven en sus propios componentes (SRP).
-    /// </summary>
+    //Responsable únicamente del movimiento del jugador
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerController : MonoBehaviour
     {
@@ -26,10 +23,6 @@ namespace ArenaSurvivor.Player
 
         private void OnEnable()
         {
-            // Defensivo: si Unity recompila mientras el juego está en Play, hace un domain
-            // reload que resetea campos no serializados como este sin volver a llamar a
-            // Awake() — sin este chequeo, _inputActions quedaba null y tiraba
-            // NullReferenceException acá.
             _inputActions ??= new InputSystem_Actions();
 
             _inputActions.Player.Enable();

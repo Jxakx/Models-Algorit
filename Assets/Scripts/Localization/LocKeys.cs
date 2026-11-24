@@ -1,10 +1,5 @@
 namespace ArenaSurvivor.Localization
 {
-    /// <summary>
-    /// Claves de localización como constantes: el código nunca escribe un texto del juego a
-    /// mano, pide una clave. Tener las claves acá (y no strings sueltos por todos lados)
-    /// evita errores de tipeo que se verían recién en pantalla como una clave cruda.
-    /// </summary>
     public static class LocKeys
     {
         // Panel de nivel

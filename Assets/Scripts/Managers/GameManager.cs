@@ -5,11 +5,7 @@ using ArenaSurvivor.Player;
 
 namespace ArenaSurvivor.Managers
 {
-    /// <summary>
-    /// Estado general de la partida: cronómetro de supervivencia, contador de bajas, y
-    /// condición de victoria (sobrevivir winTimeSeconds) / derrota (el jugador muere).
-    /// No conoce a la UI directamente — todo pasa por el EventManager (Observer).
-    /// </summary>
+    // Estado general de la partida
     public class GameManager : MonoBehaviour
     {
         [SerializeField] private float winTimeSeconds = 180f;

@@ -2,7 +2,7 @@ using ArenaSurvivor.Core.Events;
 
 namespace ArenaSurvivor.Managers
 {
-    /// <summary>Se publica cada frame con el tiempo total sobrevivido (para el timer del HUD).</summary>
+    //Se publica cada frame con el tiempo total sobrevivido
     public readonly struct GameTimeChangedEvent : IGameEvent
     {
         public readonly float ElapsedSeconds;
@@ -13,7 +13,7 @@ namespace ArenaSurvivor.Managers
         }
     }
 
-    /// <summary>Se publica cada vez que cambia la cantidad de enemigos eliminados.</summary>
+    //Se publica cada vez que cambia la cantidad de enemigos eliminados
     public readonly struct KillCountChangedEvent : IGameEvent
     {
         public readonly int Count;
@@ -24,12 +24,12 @@ namespace ArenaSurvivor.Managers
         }
     }
 
-    /// <summary>Se publica una vez cuando el jugador pierde.</summary>
+    //Se publica una vez cuando el jugador pierde
     public readonly struct GameOverEvent : IGameEvent
     {
     }
 
-    /// <summary>Se publica una vez cuando el jugador sobrevive el tiempo objetivo.</summary>
+    //Se publica una vez cuando el jugador sobrevive el tiempo objetivo
     public readonly struct GameWonEvent : IGameEvent
     {
     }
