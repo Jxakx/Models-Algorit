@@ -4,7 +4,7 @@ using ArenaSurvivor.Enemies;
 
 namespace ArenaSurvivor.Progression
 {
-    /// <summary>Al morir un enemigo (evento), aparece una gema de XP en su posición.</summary>
+    //Al morir un enemigo, aparece una gema de XP en su posición
     public class XpGemSpawner : MonoBehaviour
     {
         [SerializeField] private XpGem gemPrefab;

@@ -4,8 +4,6 @@ namespace ArenaSurvivor.Weapons
 {
     /// <summary>
     /// Arma de área: un objeto gira alrededor del jugador y daña por contacto continuo
-    /// (con cooldown propio por enemigo, en OrbitalHitbox). No usa el ciclo de cooldown/Fire
-    /// de WeaponBase porque su daño es constante, no un disparo puntual.
     /// </summary>
     public class OrbitalWeapon : WeaponBase
     {

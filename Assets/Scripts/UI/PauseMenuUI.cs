@@ -6,12 +6,6 @@ using ArenaSurvivor.Managers;
 
 namespace ArenaSurvivor.UI
 {
-    /// <summary>
-    /// Menú de pausa: Reanudar, Reiniciar y cambio de idioma (ES/EN). Se muestra y se oculta
-    /// escuchando GamePausedEvent / GameResumedEvent — no sabe cómo ni cuándo se pausa, y
-    /// el PauseController no sabe que existe este panel. Los botones solo le piden las
-    /// acciones al controlador (o al servicio de idiomas).
-    /// </summary>
     public class PauseMenuUI : MonoBehaviour
     {
         [SerializeField] private GameObject panelRoot;

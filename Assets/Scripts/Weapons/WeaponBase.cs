@@ -5,14 +5,6 @@ using ArenaSurvivor.Weapons.HitEffects;
 
 namespace ArenaSurvivor.Weapons
 {
-    /// <summary>
-    /// Base común de toda arma: maneja el cooldown y el nivel, y delega el "cómo dispara"
-    /// a la subclase concreta (Template Method). Agregar un arma nueva es heredar de esta
-    /// clase e implementar Fire() — no hay que tocar nada del resto del sistema.
-    ///
-    /// También arma la cadena de efectos de golpe del arma (Decorator): empieza por el daño
-    /// base y le va envolviendo encima solo los efectos que el arma tiene configurados.
-    /// </summary>
     public abstract class WeaponBase : MonoBehaviour
     {
         [SerializeField] protected WeaponData data;
@@ -40,8 +32,6 @@ namespace ArenaSurvivor.Weapons
 
         public float CurrentDamage =>
             data.GetDamage(CurrentLevel) * (_ownerStats != null ? _ownerStats.DamageMultiplier : 1f);
-
-        /// <summary>Lo que pasa cuando esta arma conecta un golpe (daño + los decoradores que tenga).</summary>
         public IHitEffect HitEffect => _hitEffect ??= BuildHitEffect();
 
         protected virtual void Awake()
@@ -51,14 +41,6 @@ namespace ArenaSurvivor.Weapons
 
         protected virtual void Start()
         {
-            // Un arma que arranca desactivada (todavía no desbloqueada) no llega a este Start —
-            // Unity solo lo llama la primera vez que el componente está habilitado. Por eso
-            // este mismo Start sirve para avisarle al HUD "esta arma ya existe" tanto para la
-            // inicial (activa desde el arranque) como para una desbloqueada más tarde en
-            // LevelUpManager (weapon.enabled = true). Se usa Start y no OnEnable para evitar
-            // la misma condición de carrera que tuvo la barra de vida: Start recién corre
-            // después de que TODOS los OnEnable de la escena ya pasaron, así que el HUD de
-            // armas ya está suscripto cuando esto se publica.
             PublishChanged();
         }
 
@@ -71,9 +53,6 @@ namespace ArenaSurvivor.Weapons
             }
         }
 
-        // El evento lleva la CLAVE de localización del nombre (no el texto ya traducido):
-        // cada oyente la traduce al idioma actual cuando dibuja, y la vuelve a traducir si
-        // el jugador cambia de idioma.
         private void PublishChanged()
         {
             EventManager.Publish(new WeaponChangedEvent(data.NameKey, CurrentLevel, data.MaxLevel));
@@ -90,14 +69,11 @@ namespace ArenaSurvivor.Weapons
             }
         }
 
-        /// <summary>Se invoca automáticamente cada vez que se cumple el cooldown.</summary>
+        //Se invoca automáticamente cada vez que se cumple el cooldown
         protected virtual void Fire()
         {
         }
 
-        // Decorator: se parte del efecto simple (solo daño) y se envuelve con cada efecto
-        // activo. El orden de envoltura define el orden de ejecución: el último en envolver
-        // es el primero en actuar, y el daño (el más interno) siempre va al final.
         private IHitEffect BuildHitEffect()
         {
             IHitEffect effect = new DamageHitEffect();

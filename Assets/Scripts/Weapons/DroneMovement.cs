@@ -3,10 +3,10 @@ using UnityEngine;
 namespace ArenaSurvivor.Weapons
 {
     /// <summary>
-    /// Mantiene al dron siempre a la misma distancia del jugador (su "límite"), girando
+    /// Mantiene al dron siempre a la misma distancia del jugador, girando
     /// despacio para mirar hacia el enemigo que le indique la estrategia de targeting de
     /// su arma cuando hay uno cerca, y volviendo solo a su ángulo de reposo cuando no hay
-    /// ninguno — nunca se aleja más del límite, solo cambia de qué lado del jugador se para.
+    /// ninguno.
     /// </summary>
     public class DroneMovement : MonoBehaviour
     {
@@ -21,7 +21,7 @@ namespace ArenaSurvivor.Weapons
         private TargetedWeapon _owner;
         private float _currentAngleDegrees;
 
-        /// <summary>El arma dueña del dron: de ella sale la estrategia que decide hacia quién mira.</summary>
+        //El arma dueña del dron: de ella sale la estrategia que decide hacia quién mira
         public void SetOwner(TargetedWeapon owner)
         {
             _owner = owner;

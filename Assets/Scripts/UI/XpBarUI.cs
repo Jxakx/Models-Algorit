@@ -6,10 +6,6 @@ using ArenaSurvivor.Player;
 
 namespace ArenaSurvivor.UI
 {
-    /// <summary>
-    /// Barra de XP + texto de nivel. Escucha PlayerXpChangedEvent (Observer) y
-    /// LanguageChangedEvent (para volver a escribir "Nv."/"Lv." en el idioma nuevo).
-    /// </summary>
     public class XpBarUI : MonoBehaviour
     {
         [SerializeField] private Image fillImage;

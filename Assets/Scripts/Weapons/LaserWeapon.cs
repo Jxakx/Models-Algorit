@@ -10,10 +10,7 @@ namespace ArenaSurvivor.Weapons
 {
     /// <summary>
     /// Haz perforante: dispara en línea recta hacia el enemigo que elija su estrategia de
-    /// targeting y atraviesa a todos los que estén en el camino (no se detiene en el
-    /// primero, a diferencia de la bala). Es instantáneo (hit-scan, sin proyectil viajando)
-    /// — el LineRenderer es solo el feedback visual del disparo, no participa en la
-    /// detección de impacto.
+    /// targeting y atraviesa a todos los que estén en el camino 
     /// </summary>
     public class LaserWeapon : TargetedWeapon
     {
@@ -25,9 +22,7 @@ namespace ArenaSurvivor.Weapons
         [SerializeField] private LineRenderer beamVisual;
         [SerializeField] private float beamVisualDuration = 0.15f;
 
-        // Se juntan primero los enemigos del haz y recién después se les aplica el golpe:
-        // un golpe que mata saca al enemigo de EnemyRegistry en el acto, y modificar la lista
-        // mientras se la recorre salteaba enemigos del haz.
+        // Se juntan primero los enemigos del haz y recién después se les aplica el golpe
         private readonly List<Enemy> _beamHits = new List<Enemy>();
         private Coroutine _visualRoutine;
 

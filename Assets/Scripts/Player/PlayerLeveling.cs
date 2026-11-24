@@ -3,16 +3,8 @@ using ArenaSurvivor.Core.Events;
 
 namespace ArenaSurvivor.Player
 {
-    /// <summary>
-    /// Acumula XP recolectada (evento global) y sube de nivel cuando corresponde.
-    /// No sabe nada de UI ni de mejoras — solo publica los eventos correspondientes
-    /// y que cada quien (HUD, LevelUpManager) reaccione por su cuenta (Observer).
-    ///
-    /// Look-Up Table: cuánta XP pide cada nivel sale de una TABLA indexada por nivel (editable
-    /// en el Inspector), no de multiplicar en cada subida de nivel. Los parámetros base solo
-    /// sirven para llenarla (menú contextual "Regenerar tabla de XP"); pasado el último nivel
-    /// de la tabla, la curva sigue creciendo con el mismo multiplicador.
-    /// </summary>
+    // Acumula XP recolectada (evento global) y sube de nivel cuando corresponde.
+    // Look-Up Table: cuánta XP pide cada nivel sale de una TABLA indexada por nivel
     public class PlayerLeveling : MonoBehaviour
     {
         private const int TableLevels = 40;
@@ -63,7 +55,6 @@ namespace ArenaSurvivor.Player
             EventManager.Publish(new PlayerXpChangedEvent(CurrentXp, XpToNextLevel, Level));
         }
 
-        /// <summary>XP que hace falta para pasar del nivel indicado al siguiente (un acceso a la tabla).</summary>
         private int XpForLevel(int level)
         {
             if (xpPerLevel == null || xpPerLevel.Length == 0)
@@ -77,7 +68,6 @@ namespace ArenaSurvivor.Player
                 return xpPerLevel[index];
             }
 
-            // Más allá de la tabla: sigue la misma curva a partir de la última fila.
             var xp = xpPerLevel[xpPerLevel.Length - 1];
             for (var i = xpPerLevel.Length; i <= index; i++)
             {

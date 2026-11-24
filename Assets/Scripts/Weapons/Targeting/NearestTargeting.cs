@@ -4,7 +4,7 @@ using ArenaSurvivor.Enemies;
 
 namespace ArenaSurvivor.Weapons.Targeting
 {
-    /// <summary>Apunta al enemigo más cercano (el criterio original de todas las armas).</summary>
+    //Apunta al enemigo más cercano
     [CreateAssetMenu(fileName = "Targeting_Nearest", menuName = "Arena Survivor/Targeting/Nearest")]
     public class NearestTargeting : TargetingStrategy
     {

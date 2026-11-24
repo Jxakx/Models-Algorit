@@ -6,10 +6,6 @@ using ArenaSurvivor.Weapons.HitEffects;
 
 namespace ArenaSurvivor.Weapons
 {
-    /// <summary>
-    /// Collider hijo del OrbitalWeapon: aplica el efecto de golpe del arma con un cooldown
-    /// por enemigo tocado.
-    /// </summary>
     public class OrbitalHitbox : MonoBehaviour
     {
         private const float HitCooldown = 0.5f;

@@ -3,11 +3,7 @@ using ArenaSurvivor.Core.Events;
 
 namespace ArenaSurvivor.Player
 {
-    /// <summary>
-    /// Multiplicadores acumulables que las mejoras de nivel aplican sobre el jugador.
-    /// PlayerController y las armas lo leen; el LevelUpManager lo escribe. Publica un evento
-    /// cada vez que cambia para que el HUD pueda mostrar el % actual (Observer).
-    /// </summary>
+    // Multiplicadores acumulables que las mejoras de nivel aplican sobre el jugador.
     public class PlayerStats : MonoBehaviour
     {
         public float MoveSpeedMultiplier { get; private set; } = 1f;

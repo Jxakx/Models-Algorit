@@ -4,7 +4,7 @@ using ArenaSurvivor.Enemies;
 
 namespace ArenaSurvivor.Weapons.Targeting
 {
-    /// <summary>Apunta al enemigo con más vida actual dentro del alcance (le saca el tanque al enjambre).</summary>
+    //Apunta al enemigo con más vida actual dentro del alcance
     [CreateAssetMenu(fileName = "Targeting_Strongest", menuName = "Arena Survivor/Targeting/Strongest")]
     public class StrongestTargeting : TargetingStrategy
     {

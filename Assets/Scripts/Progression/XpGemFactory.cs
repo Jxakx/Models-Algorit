@@ -3,7 +3,7 @@ using ArenaSurvivor.Core.Pooling;
 
 namespace ArenaSurvivor.Progression
 {
-    /// <summary>Crea/recicla gemas de XP vía ObjectPool — mismo patrón que EnemyFactory.</summary>
+    //Crea/recicla gemas de XP vía ObjectPool
     public class XpGemFactory
     {
         private readonly ObjectPool<XpGem> _pool;

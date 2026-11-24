@@ -6,11 +6,7 @@ using ArenaSurvivor.Player;
 
 namespace ArenaSurvivor.Progression
 {
-    /// <summary>
-    /// Gema de XP pooleada: si el jugador entra en su radio de imán, vuela hacia él; al
-    /// tocarlo, publica XpCollectedEvent y se libera al pool. No conoce a PlayerLeveling
-    /// directamente — solo publica el evento (Observer).
-    /// </summary>
+    // Gema de XP pooleada: si el jugador entra en su radio de imán, vuela hacia él
     [RequireComponent(typeof(Rigidbody2D))]
     public class XpGem : MonoBehaviour, IPoolable
     {

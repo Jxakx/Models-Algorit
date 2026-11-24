@@ -8,12 +8,7 @@ using ArenaSurvivor.Weapons.HitEffects;
 
 namespace ArenaSurvivor.Weapons
 {
-    /// <summary>
-    /// Cadena eléctrica: pega en el enemigo que elija su estrategia de targeting y salta al
-    /// próximo (elegido con la misma estrategia, excluyendo a los ya golpeados) dentro de un
-    /// radio corto, hasta un máximo de saltos. Cada salto hace el mismo daño (sin caída) —
-    /// la gracia es alcanzar a varios enemigos, no pegar más fuerte.
-    /// </summary>
+    // Cadena eléctrica: pega en el enemigo que elija su estrategia de targeting y salta al próximo dentro de un radio corto
     public class ChainLightningWeapon : TargetedWeapon
     {
         [SerializeField] private float range = 9f;

@@ -6,10 +6,7 @@ using ArenaSurvivor.Player;
 
 namespace ArenaSurvivor.UI
 {
-    /// <summary>
-    /// Muestra los multiplicadores de velocidad y daño como porcentaje. Escucha
-    /// PlayerStatsChangedEvent y LanguageChangedEvent (para traducir las etiquetas).
-    /// </summary>
+    // Muestra los multiplicadores de velocidad y daño como porcentaje. Escucha PlayerStatsChangedEvent y LanguageChangedEvent
     public class PlayerStatsUI : MonoBehaviour
     {
         [SerializeField] private Text statsText;

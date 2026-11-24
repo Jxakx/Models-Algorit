@@ -5,7 +5,7 @@ using ArenaSurvivor.Managers;
 
 namespace ArenaSurvivor.UI
 {
-    /// <summary>Muestra el tiempo sobrevivido en formato MM:SS. Solo escucha GameTimeChangedEvent.</summary>
+    //Muestra el tiempo sobrevivido en formato MM:SS
     public class GameTimerUI : MonoBehaviour
     {
         [SerializeField] private Text timerText;

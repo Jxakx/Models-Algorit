@@ -5,10 +5,8 @@ using ArenaSurvivor.Fx;
 namespace ArenaSurvivor.Weapons
 {
     /// <summary>
-    /// Dron acompañante: flota cerca del jugador (ver DroneMovement) y dispara solo, de
-    /// forma independiente, al enemigo que elija su estrategia de targeting midiendo desde
-    /// ÉL — reusa el mismo Projectile/Factory que la bala mágica, solo que el origen del
-    /// disparo es el dron, no el jugador.
+    /// Dron acompañante: flota cerca del jugador y dispara solo, de
+    /// forma independiente, al enemigo que elija su estrategia de targeting
     /// </summary>
     public class DroneWeapon : TargetedWeapon
     {
@@ -23,7 +21,7 @@ namespace ArenaSurvivor.Weapons
             base.Awake();
             _factory = new ProjectileFactory(projectilePrefab, transform);
 
-            // El movimiento del dron (a dónde mira) también usa la estrategia de targeting del arma.
+            // El movimiento del dron también usa la estrategia de targeting del arma.
             if (droneVisual != null && droneVisual.TryGetComponent<DroneMovement>(out var movement))
             {
                 movement.SetOwner(this);
@@ -50,8 +48,6 @@ namespace ArenaSurvivor.Weapons
             _factory.Create(origin, direction, Data, CurrentDamage, HitEffect);
         }
 
-        // El visual es un hijo aparte: sin esto, seguiría flotando a la vista aunque el
-        // arma todavía no esté desbloqueada (arranca desactivada hasta elegirla en el panel).
         private void OnEnable()
         {
             if (droneVisual != null)

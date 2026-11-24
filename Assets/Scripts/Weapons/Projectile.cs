@@ -7,15 +7,6 @@ using ArenaSurvivor.Weapons.HitEffects;
 
 namespace ArenaSurvivor.Weapons
 {
-    /// <summary>
-    /// Proyectil pooleado: vuela en línea recta, aplica el efecto de golpe de su arma al
-    /// primer IDamageable que no sea el Player, y se libera solo al pool (por impacto o por
-    /// vencerse su tiempo de vida).
-    ///
-    /// Es un contexto del Flyweight: velocidad y tiempo de vida las lee del WeaponData
-    /// compartido por todos los proyectiles del arma, en vez de copiarlos en cada bala.
-    /// Lo único propio de cada proyectil es su dirección, su daño y su cronómetro.
-    /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
     public class Projectile : MonoBehaviour, IPoolable
     {

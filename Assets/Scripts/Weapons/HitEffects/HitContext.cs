@@ -2,12 +2,7 @@ using UnityEngine;
 
 namespace ArenaSurvivor.Weapons.HitEffects
 {
-    /// <summary>
-    /// Los datos de UN golpe, armados por quien lo da (proyectil, láser, orbe...) y pasados
-    /// a la cadena de efectos. El objetivo se guarda como Component genérico, no como Enemy:
-    /// cada efecto le pide la capacidad que necesita (IDamageable, IKnockbackable,
-    /// ISlowable) y se salta el golpe si el objetivo no la tiene.
-    /// </summary>
+    // Los datos de UN golpe, armados por quien lo da (proyectil, láser, orbe...) y pasados a la cadena de efectos
     public readonly struct HitContext
     {
         public readonly Component Target;

@@ -2,7 +2,7 @@ using ArenaSurvivor.Core.Combat;
 
 namespace ArenaSurvivor.Weapons.HitEffects
 {
-    /// <summary>Decorador: además del golpe, empuja al objetivo en la dirección del impacto.</summary>
+    //Decorador: además del golpe, empuja al objetivo en la dirección del impacto
     public sealed class KnockbackDecorator : HitEffectDecorator
     {
         private readonly float _force;

@@ -7,11 +7,8 @@ using ArenaSurvivor.Managers;
 
 namespace ArenaSurvivor.UI
 {
-    /// <summary>
-    /// Panel de fin de partida por VICTORIA — la derrota tiene su propio tratamiento (el
-    /// pantallazo azul, ver BsodUI), así que este solo escucha GameWonEvent.
-    /// Con el panel activo, R reinicia la escena.
-    /// </summary>
+    // Panel de fin de partida por VICTORIA
+    // Con el panel activo, R reinicia la escena
     public class GameEndUI : MonoBehaviour
     {
         [SerializeField] private GameObject panelRoot;

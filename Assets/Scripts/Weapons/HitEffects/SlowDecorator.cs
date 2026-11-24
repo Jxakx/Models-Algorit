@@ -2,7 +2,7 @@ using ArenaSurvivor.Core.Combat;
 
 namespace ArenaSurvivor.Weapons.HitEffects
 {
-    /// <summary>Decorador: además del golpe, ralentiza al objetivo durante un rato.</summary>
+    //Decorador: además del golpe, ralentiza al objetivo durante un rato
     public sealed class SlowDecorator : HitEffectDecorator
     {
         private readonly float _speedMultiplier;

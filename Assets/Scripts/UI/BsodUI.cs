@@ -7,13 +7,7 @@ using ArenaSurvivor.Managers;
 
 namespace ArenaSurvivor.UI
 {
-    /// <summary>
-    /// El "pantallazo azul" cuando el jugador muere — reemplaza al panel de game over
-    /// genérico solo para la derrota (ganar sigue mostrando el panel normal de GameEndUI).
-    /// Vive separado de GameEndUI a propósito: son dos tratamientos visuales completamente
-    /// distintos, y cada uno solo necesita escuchar su propio evento. El texto sale del
-    /// sistema de localización. Con el panel activo, R reinicia la escena.
-    /// </summary>
+    // El "pantallazo azul" cuando el jugador muere 
     public class BsodUI : MonoBehaviour
     {
         [SerializeField] private GameObject panelRoot;

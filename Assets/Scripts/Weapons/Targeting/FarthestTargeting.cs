@@ -4,7 +4,7 @@ using ArenaSurvivor.Enemies;
 
 namespace ArenaSurvivor.Weapons.Targeting
 {
-    /// <summary>Apunta al enemigo más lejano que todavía esté dentro del alcance (limpia el borde de la pantalla).</summary>
+    //Apunta al enemigo más lejano que todavía esté dentro del alcance
     [CreateAssetMenu(fileName = "Targeting_Farthest", menuName = "Arena Survivor/Targeting/Farthest")]
     public class FarthestTargeting : TargetingStrategy
     {

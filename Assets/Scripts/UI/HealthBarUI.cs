@@ -5,13 +5,6 @@ using ArenaSurvivor.Player;
 
 namespace ArenaSurvivor.UI
 {
-    /// <summary>
-    /// Actualiza la barra de vida del jugador. La jerarquía de UI (Canvas, Image de fondo,
-    /// Image de relleno) se arma a mano en el Editor; este script solo necesita la referencia
-    /// a la Image de relleno para pintar el porcentaje de vida actual.
-    ///
-    /// No conoce al Player ni a su Health — solo escucha PlayerHealthChangedEvent (Observer).
-    /// </summary>
     public class HealthBarUI : MonoBehaviour
     {
         [SerializeField] private Image fillImage;
@@ -19,11 +12,6 @@ namespace ArenaSurvivor.UI
 
         private void Awake()
         {
-            // Arranca llena a la vista: Awake corre para TODOS los objetos de la escena antes
-            // que cualquier OnEnable, así que si PlayerHealth publica su estado inicial antes
-            // de que este script llegue a suscribirse (el orden entre OnEnable de objetos
-            // distintos no está garantizado), la barra no se queda invisible/vacía esperando
-            // el primer golpe — ya arrancó mostrando el 100% real con el que siempre empieza.
             fillImage.fillAmount = 1f;
         }
 

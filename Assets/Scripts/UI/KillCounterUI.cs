@@ -6,10 +6,7 @@ using ArenaSurvivor.Managers;
 
 namespace ArenaSurvivor.UI
 {
-    /// <summary>
-    /// Muestra la cantidad de enemigos eliminados. Escucha KillCountChangedEvent y
-    /// LanguageChangedEvent (para volver a escribir la etiqueta en el idioma nuevo).
-    /// </summary>
+    // Muestra la cantidad de enemigos eliminados
     public class KillCounterUI : MonoBehaviour
     {
         [SerializeField] private Text countText;

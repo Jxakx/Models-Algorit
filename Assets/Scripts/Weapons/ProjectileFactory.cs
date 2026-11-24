@@ -4,7 +4,6 @@ using ArenaSurvivor.Weapons.HitEffects;
 
 namespace ArenaSurvivor.Weapons
 {
-    /// <summary>Crea/recicla proyectiles vía ObjectPool — mismo patrón que EnemyFactory.</summary>
     public class ProjectileFactory
     {
         private readonly ObjectPool<Projectile> _pool;

@@ -9,12 +9,7 @@ using ArenaSurvivor.Weapons;
 
 namespace ArenaSurvivor.UI
 {
-    /// <summary>
-    /// Panel de demostración del patrón Flyweight: muestra, en vivo, cuántos objetos están
-    /// usando un dato compartido y cuántos datos compartidos hay en memoria. Por ejemplo,
-    /// "87 enemigos vivos -> 3 EnemyData": los 87 no tienen cada uno su copia de las
-    /// estadísticas, todos apuntan a las mismas 3. F3 lo muestra u oculta.
-    /// </summary>
+    // Panel de demostración del patrón Flyweight
     public class FlyweightStatsUI : MonoBehaviour
     {
         private const float RefreshInterval = 0.25f;
@@ -26,8 +21,6 @@ namespace ArenaSurvivor.UI
 
         private void Awake()
         {
-            // Arranca de cero los contadores de uso: los objetos de la escena anterior (si la
-            // hubo) se destruyeron sin avisar, y sin esto el conteo los arrastraría.
             FlyweightFactory<EnemyData>.ResetUsage();
             FlyweightFactory<WeaponData>.ResetUsage();
             FlyweightFactory<DamageNumberStyle>.ResetUsage();
@@ -46,9 +39,6 @@ namespace ArenaSurvivor.UI
 
         private void Update()
         {
-            // El script vive en un objeto que siempre está activo; lo que se prende y se
-            // apaga es el hijo con el texto (si el script viviera en el mismo objeto que
-            // apaga, nadie volvería a escuchar F3 para prenderlo de nuevo).
             if (Input.GetKeyDown(KeyCode.F3) && visualRoot != null)
             {
                 visualRoot.SetActive(!visualRoot.activeSelf);

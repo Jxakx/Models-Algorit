@@ -4,10 +4,6 @@ using ArenaSurvivor.Fx;
 
 namespace ArenaSurvivor.Weapons
 {
-    /// <summary>
-    /// Arma base: dispara al enemigo que elija su estrategia de targeting (por defecto el
-    /// más cercano). Más proyectiles al subir de nivel.
-    /// </summary>
     public class ProjectileWeapon : TargetedWeapon
     {
         [SerializeField] private Projectile projectilePrefab;
